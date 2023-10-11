@@ -3,7 +3,7 @@ package com.example.siado.utils
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
-import com.example.siado.camerax.CameraConstants
+import com.example.siado.utils.camerax.CameraConstants
 
 object CameraPermissionHandler {
 

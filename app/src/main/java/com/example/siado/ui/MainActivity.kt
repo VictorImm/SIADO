@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.example.siado.camerax.CameraConstants
+import com.example.siado.utils.camerax.CameraConstants
 import com.example.siado.databinding.ActivityMainBinding
 import com.example.siado.utils.CameraPermissionHandler
 
