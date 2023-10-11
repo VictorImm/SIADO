@@ -1,4 +1,4 @@
-package com.example.siado.camerax
+package com.example.siado.utils.camerax
 
 import android.content.Context
 import android.graphics.BitmapFactory
