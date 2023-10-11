@@ -1,29 +1,20 @@
 package com.example.siado.ui
 
-import android.app.Dialog
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.camera.view.PreviewView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-import com.example.siado.camerax.CameraConstants
-import com.example.siado.camerax.CameraManager
+import androidx.lifecycle.Observer
+import com.example.siado.utils.camerax.CameraManager
 import com.example.siado.databinding.ActivityCameraBinding
-import com.example.siado.databinding.DialogCapturedBinding
-import com.example.siado.ui.CustomDialog
-import java.util.concurrent.ExecutorService
+import com.example.siado.ui.dialog.TrueDialog
+import com.example.siado.utils.GetTimeNow
 
 class CameraActivity : AppCompatActivity() {
 
@@ -43,7 +34,7 @@ class CameraActivity : AppCompatActivity() {
         var bitmapLiveData = MutableLiveData<Bitmap>()
     }
 
-    private val dialog = CustomDialog()
+    private val trueDialog = TrueDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +62,9 @@ class CameraActivity : AppCompatActivity() {
         btnCapture.setOnClickListener {
             Log.d("btnCapture", "clicked!")
 
+            // get dateTime
+            val dateTime = GetTimeNow.getDateToday()
+
             // take photo
             cameraManager.takePhoto()
 
@@ -79,7 +73,24 @@ class CameraActivity : AppCompatActivity() {
             loading.visibility = View.VISIBLE
 
             // show custom dialog
-            dialog.showDialog(this, this@CameraActivity)
+            bitmapLiveData.observe(this, Observer { bitmap ->
+                if (bitmap != null) {
+                    val name = "Victor"
+                    val job = "Programmer SIADO"
+                    // TODO:
+                    //  use ML model to verify the user name
+                    //  use viewModel to present
+                    trueDialog.showDialog(
+                        name,
+                        job,
+                        this,
+                        this@CameraActivity
+                    )
+
+                    bgDim.visibility = View.GONE
+                    loading.visibility = View.GONE
+                }
+            })
         }
     }
 
