@@ -57,4 +57,13 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_siado_desc" />
+
+    <Button
+        android:id="@+id/btn_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":)"
+        app:layout_constraintEnd_toEndOf="@+id/btn_present"
+        app:layout_constraintStart_toStartOf="@+id/btn_present"
+        app:layout_constraintTop_toBottomOf="@+id/btn_present" />
 </androidx.constraintlayout.widget.ConstraintLayout>
