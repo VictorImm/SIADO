@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import com.example.siado.data.application.Application
 import com.example.siado.utils.camerax.CameraConstants
 import com.example.siado.databinding.ActivityMainBinding
 import com.example.siado.utils.CameraPermissionHandler
+import com.example.siado.viewmodel.UserViewModel
+import com.example.siado.viewmodel.UserViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +21,14 @@ class MainActivity : AppCompatActivity() {
 
     // widgets
     private lateinit var btnPresent: Button
+    private lateinit var btnClear: Button
+
+    // viewModel
+    private val viewModel: UserViewModel by viewModels {
+        UserViewModelFactory(
+            (application as Application).database.userDao()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +42,13 @@ class MainActivity : AppCompatActivity() {
         btnPresent = binding.btnPresent
         btnPresent.isEnabled = false
         btnPresent.setOnClickListener {
-            CameraActivity.bitmapLiveData.postValue(null)
             val intent = Intent(this@MainActivity, CameraActivity::class.java)
             startActivity(intent)
+        }
+
+        btnClear = binding.btnClear
+        btnClear.setOnClickListener {
+            viewModel.clear()
         }
 
         // check if all permissions is granted
