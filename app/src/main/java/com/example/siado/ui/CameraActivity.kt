@@ -11,10 +11,14 @@ import android.widget.ProgressBar
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.example.siado.data.application.Application
 import com.example.siado.utils.camerax.CameraManager
 import com.example.siado.databinding.ActivityCameraBinding
 import com.example.siado.ui.dialog.TrueDialog
 import com.example.siado.utils.GetTimeNow
+import com.example.siado.viewmodel.UserViewModel
+import com.example.siado.viewmodel.UserViewModelFactory
+import androidx.activity.viewModels
 
 class CameraActivity : AppCompatActivity() {
 
@@ -31,10 +35,14 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var cameraManager: CameraManager
 
     companion object {
-        var bitmapLiveData = MutableLiveData<Bitmap>()
+        var statusLiveData = MutableLiveData<Int>()
     }
 
-    private val trueDialog = TrueDialog()
+    private val viewModel: UserViewModel by viewModels {
+        UserViewModelFactory(
+            (application as Application).database.userDao()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +59,7 @@ class CameraActivity : AppCompatActivity() {
         cameraView = binding.cameraView
 
         // init cameraX
-        cameraManager = CameraManager(
-            this,
-            cameraView,
-            this
-        )
-        cameraManager.startCamera()
+        initCamera()
 
         // btn capture
         btnCapture.setOnClickListener {
@@ -66,29 +69,26 @@ class CameraActivity : AppCompatActivity() {
             val dateTime = GetTimeNow.getDateToday()
 
             // take photo
-            cameraManager.takePhoto()
+            cameraManager.takePhoto(
+                viewModel,
+                dateTime,
+                this
+            )
 
             // launch progress bar
             bgDim.visibility = View.VISIBLE
             loading.visibility = View.VISIBLE
 
-            // show custom dialog
-            bitmapLiveData.observe(this, Observer { bitmap ->
-                if (bitmap != null) {
-                    val name = "Victor"
-                    val job = "Programmer SIADO"
-                    // TODO:
-                    //  use ML model to verify the user name
-                    //  use viewModel to present
-                    trueDialog.showDialog(
-                        name,
-                        job,
-                        this,
-                        this@CameraActivity
-                    )
-
+            statusLiveData.observe(this, Observer {  status ->
+                if (status == 0) {
                     bgDim.visibility = View.GONE
                     loading.visibility = View.GONE
+
+                    statusLiveData.postValue(1)
+
+                    // reset camera
+                    cameraManager.stopCamera()
+                    initCamera()
                 }
             })
         }
@@ -97,5 +97,15 @@ class CameraActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cameraManager.stopCamera()
+    }
+
+    private fun initCamera() {
+        // init cameraX
+        cameraManager = CameraManager(
+            this,
+            cameraView,
+            this
+        )
+        cameraManager.startCamera()
     }
 }

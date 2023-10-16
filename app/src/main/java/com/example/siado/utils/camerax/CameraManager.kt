@@ -9,7 +9,10 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
+import com.example.siado.data.DateTime
 import com.example.siado.ui.CameraActivity
+import com.example.siado.viewmodel.UserViewModel
 import java.nio.ByteBuffer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -84,7 +87,11 @@ class CameraManager(
         }, ContextCompat.getMainExecutor(context))
     }
 
-    fun takePhoto() {
+    fun takePhoto(
+        viewModel: UserViewModel,
+        dateTime: DateTime,
+        context: Context
+    ) {
 
         imageCapture?.takePicture(
             ContextCompat.getMainExecutor(context),
@@ -103,7 +110,20 @@ class CameraManager(
 
                     if (bitmapImage != null) {
                         // TODO: do something
-                        CameraActivity.bitmapLiveData.postValue(bitmapImage)
+                        //  use ML model to verify the user name
+                        // verifyPhoto()
+
+                        // use viewModel to insert into database
+                        insertName(
+                            viewModel,
+                            "Victor",
+                            dateTime,
+                            context
+                        )
+
+                        // clear bg dim and loading
+                        CameraActivity.statusLiveData.postValue(0)
+
                     }
 
                 }
@@ -117,6 +137,19 @@ class CameraManager(
 
     fun stopCamera() {
         cameraProvider?.unbindAll()
+    }
+
+    private fun insertName(
+        viewModel: UserViewModel,
+        name: String,
+        dateTime: DateTime,
+        context: Context
+    ) {
+        viewModel.present(
+            name,
+            dateTime,
+            context
+        )
     }
 
 }

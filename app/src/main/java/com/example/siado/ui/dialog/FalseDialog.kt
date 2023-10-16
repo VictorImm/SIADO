@@ -11,16 +11,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.example.siado.R
 import com.example.siado.ui.CameraActivity
 import com.example.siado.utils.BitmapRotator
 
-class TrueDialog() {
+class FalseDialog {
 
     fun showDialog(
-        name: String,
-        status: Int,
+        errorCode: Int,
         context: Context,
     ) {
 
@@ -29,20 +27,18 @@ class TrueDialog() {
         // set dialog properties
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_valid)
+        dialog.setContentView(R.layout.dialog_invalid)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val tvWelcome: TextView = dialog.findViewById(R.id.tv_welcome)
-        tvWelcome.text = when (status) {
-            0, 2 -> "Welcome, "
-            else -> "See you, "
+        val tvMessage: TextView = dialog.findViewById(R.id.tv_error)
+        tvMessage.text = when (errorCode) {
+            3 -> "Already present!"
+            else -> "Invalid time arrival!"
+
         }
 
-        val tvName: TextView = dialog.findViewById(R.id.tv_name)
-        tvName.text = name
-
-        val btnDone: Button = dialog.findViewById(R.id.btn_done)
-        btnDone.setOnClickListener {
+        val btnClose: Button = dialog.findViewById(R.id.btn_close)
+        btnClose.setOnClickListener {
             Log.d("btnDialog", "clicked!")
 
             dialog.dismiss()
