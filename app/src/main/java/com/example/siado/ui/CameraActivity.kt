@@ -19,6 +19,12 @@ import com.example.siado.utils.GetTimeNow
 import com.example.siado.viewmodel.UserViewModel
 import com.example.siado.viewmodel.UserViewModelFactory
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.coroutines.coroutineContext
 
 class CameraActivity : AppCompatActivity() {
 
@@ -35,7 +41,8 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var cameraManager: CameraManager
 
     companion object {
-        var statusLiveData = MutableLiveData<Int>()
+        var captureStatusLiveData = MutableLiveData<Int>()
+        var dialogStatusLiveData = MutableLiveData<Int>()
     }
 
     private val viewModel: UserViewModel by viewModels {
@@ -79,12 +86,12 @@ class CameraActivity : AppCompatActivity() {
             bgDim.visibility = View.VISIBLE
             loading.visibility = View.VISIBLE
 
-            statusLiveData.observe(this, Observer {  status ->
+            captureStatusLiveData.observe(this, Observer {  status ->
                 if (status == 0) {
                     bgDim.visibility = View.GONE
                     loading.visibility = View.GONE
 
-                    statusLiveData.postValue(1)
+                    captureStatusLiveData.postValue(1)
 
                     // reset camera
                     cameraManager.stopCamera()
@@ -107,5 +114,19 @@ class CameraActivity : AppCompatActivity() {
             this
         )
         cameraManager.startCamera()
+
+        // TODO: Apakah akan membebani hrdware jika membuat terlalu banyak threads?
+        // finish activity when 60s idle
+        dialogStatusLiveData.observe(this@CameraActivity, Observer {
+            if (dialogStatusLiveData.value == 0) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(60000)
+
+                    if (dialogStatusLiveData.value == 0) {
+                        finish()
+                    }
+                }
+            }
+        })
     }
 }

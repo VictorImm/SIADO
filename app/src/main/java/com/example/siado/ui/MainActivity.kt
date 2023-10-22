@@ -16,6 +16,10 @@ import com.example.siado.viewmodel.UserViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val databaseUrl = "https://siado-temp-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    }
+
     // binding
     private lateinit var binding: ActivityMainBinding
 
@@ -42,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         btnPresent = binding.btnPresent
         btnPresent.isEnabled = false
         btnPresent.setOnClickListener {
+            CameraActivity.dialogStatusLiveData.postValue(0)
+
             val intent = Intent(this@MainActivity, CameraActivity::class.java)
             startActivity(intent)
         }

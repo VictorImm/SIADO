@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import com.example.siado.R
 import com.example.siado.ui.CameraActivity
 import com.example.siado.utils.BitmapRotator
+import kotlinx.coroutines.*
 
 class TrueDialog() {
 
@@ -45,10 +46,23 @@ class TrueDialog() {
         btnDone.setOnClickListener {
             Log.d("btnDialog", "clicked!")
 
+            // reset dialog status
+            CameraActivity.dialogStatusLiveData.postValue(0)
+
             dialog.dismiss()
         }
 
         // show the dialog
         dialog.show()
+
+        // close dialog when 10s idle
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(10000)
+
+            if (CameraActivity.dialogStatusLiveData.value == 1) {
+                CameraActivity.dialogStatusLiveData.postValue(0)
+                dialog.dismiss()
+            }
+        }
     }
 }

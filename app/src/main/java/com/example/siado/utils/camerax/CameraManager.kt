@@ -1,6 +1,7 @@
 package com.example.siado.utils.camerax
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.camera.core.*
@@ -116,13 +117,14 @@ class CameraManager(
                         // use viewModel to insert into database
                         insertName(
                             viewModel,
+                            bitmapImage,
                             "Victor",
                             dateTime,
                             context
                         )
 
                         // clear bg dim and loading
-                        CameraActivity.statusLiveData.postValue(0)
+                        CameraActivity.captureStatusLiveData.postValue(0)
 
                     }
 
@@ -141,11 +143,13 @@ class CameraManager(
 
     private fun insertName(
         viewModel: UserViewModel,
+        image: Bitmap,
         name: String,
         dateTime: DateTime,
         context: Context
     ) {
         viewModel.present(
+            image,
             name,
             dateTime,
             context
