@@ -5,6 +5,9 @@ plugins {
 
     // parcelable
     id 'kotlin-parcelize'
+
+    // google services
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -68,4 +71,12 @@ dependencies {
     // viewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.activity:activity-ktx:1.4.0'
+
+    // Firebase libraries
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    // BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
+    // Database and Storage
+    implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
 }
