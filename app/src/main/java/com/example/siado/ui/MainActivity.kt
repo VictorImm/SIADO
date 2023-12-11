@@ -11,8 +11,8 @@ import com.example.siado.data.application.Application
 import com.example.siado.utils.camerax.CameraConstants
 import com.example.siado.databinding.ActivityMainBinding
 import com.example.siado.utils.CameraPermissionHandler
-import com.example.siado.viewmodel.UserViewModel
-import com.example.siado.viewmodel.UserViewModelFactory
+import com.example.siado.data.user.viewmodel.UserViewModel
+import com.example.siado.data.user.viewmodel.UserViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 

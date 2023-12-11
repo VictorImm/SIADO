@@ -16,8 +16,8 @@ import com.example.siado.utils.camerax.CameraManager
 import com.example.siado.databinding.ActivityCameraBinding
 import com.example.siado.ui.dialog.TrueDialog
 import com.example.siado.utils.GetTimeNow
-import com.example.siado.viewmodel.UserViewModel
-import com.example.siado.viewmodel.UserViewModelFactory
+import com.example.siado.data.user.viewmodel.UserViewModel
+import com.example.siado.data.user.viewmodel.UserViewModelFactory
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
