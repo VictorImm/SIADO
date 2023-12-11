@@ -3,6 +3,7 @@ package com.example.siado.utils.camerax
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.util.Log
 import androidx.camera.core.*
 import androidx.camera.core.ImageCapture.OnImageCapturedCallback
@@ -12,9 +13,16 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.example.siado.data.DateTime
+import com.example.siado.ml.FaceModel
 import com.example.siado.ui.CameraActivity
-import com.example.siado.viewmodel.UserViewModel
+import com.example.siado.utils.BitmapRotator
+import com.example.siado.utils.ml.FaceCrop
+import com.example.siado.utils.ml.PhotoProcessor
+import com.example.siado.data.user.viewmodel.UserViewModel
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -98,9 +106,12 @@ class CameraManager(
             ContextCompat.getMainExecutor(context),
             object: OnImageCapturedCallback() {
                 override fun onCaptureSuccess(image: ImageProxy) {
+                    // save image to buffer
                     val buffer: ByteBuffer = image.planes[0].buffer
                     val bytes = ByteArray(buffer.capacity())
                     buffer.get(bytes)
+
+                    // change buffer into bitmap
                     val bitmapImage = BitmapFactory
                         .decodeByteArray(
                             bytes,
@@ -110,18 +121,26 @@ class CameraManager(
                         )
 
                     if (bitmapImage != null) {
-                        // TODO: do something
-                        //  use ML model to verify the user name
-                        // verifyPhoto()
+                        val rotatedImage = BitmapRotator.rotate(bitmapImage)
 
-                        // use viewModel to insert into database
-                        insertName(
-                            viewModel,
-                            bitmapImage,
-                            "Victor",
-                            dateTime,
-                            context
-                        )
+                        // crop detected face
+                        val faceCrop = FaceCrop(context)
+
+                        faceCrop.analyzeBitmap(rotatedImage) { faces ->
+                            val croppedBitmap = faceCrop.cropDetectedFace(rotatedImage, faces)
+
+                            // use ML model to verify the user name
+                            val name = verifyPhoto(context, croppedBitmap!!)
+
+                            // use viewModel to insert into database
+                            insertName(
+                                viewModel,
+                                croppedBitmap,
+                                name,
+                                dateTime,
+                                context
+                            )
+                        }
 
                         // clear bg dim and loading
                         CameraActivity.captureStatusLiveData.postValue(0)
@@ -141,6 +160,21 @@ class CameraManager(
         cameraProvider?.unbindAll()
     }
 
+    private fun faceCropper(
+        bitmap: Bitmap,
+        context: Context
+    ): Bitmap? {
+        val faceCrop = FaceCrop(context)
+
+        var croppedBitmap: Bitmap? = null
+
+        faceCrop.analyzeBitmap(bitmap) { faces ->
+            croppedBitmap = faceCrop.cropDetectedFace(bitmap, faces)
+        }
+
+        return croppedBitmap
+    }
+
     private fun insertName(
         viewModel: UserViewModel,
         image: Bitmap,
@@ -154,6 +188,13 @@ class CameraManager(
             dateTime,
             context
         )
+    }
+
+    private fun verifyPhoto(
+        context: Context,
+        bitmapImage: Bitmap
+    ): String {
+        return (PhotoProcessor.classify(bitmapImage, context))
     }
 
 }
