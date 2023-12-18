@@ -3,18 +3,15 @@ package com.example.siado.data.user.viewmodel
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.siado.data.DateTime
 import com.example.siado.data.UserDetail
 import com.example.siado.data.user.User
 import com.example.siado.data.user.UserDao
-import com.example.siado.ui.CameraActivity
+import com.example.siado.ui.camera.present.CameraActivity
 import com.example.siado.ui.MainActivity.Companion.databaseUrl
 import com.example.siado.ui.dialog.FalseDialog
 import com.example.siado.ui.dialog.TrueDialog
-import com.example.siado.utils.BitmapRotator
 import com.example.siado.utils.PresentCallback
 import com.example.siado.utils.PrimaryKeyMaker
 import com.google.firebase.database.FirebaseDatabase
@@ -23,7 +20,11 @@ import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.util.*
 
+
 class UserViewModel(private val userDao: UserDao): ViewModel() {
+
+    // cache all user data
+    val allUser: LiveData<List<User>> = userDao.getAttend().asLiveData()
 
     // insert item
     private fun addNewUser(
@@ -49,7 +50,7 @@ class UserViewModel(private val userDao: UserDao): ViewModel() {
             userDao.insert(newUser)
         }
 
-        // TODO: gateway to firebase database
+        // gateway to firebase database
         addNewUserToFirebase(image, newUser)
     }
 
@@ -148,6 +149,15 @@ class UserViewModel(private val userDao: UserDao): ViewModel() {
         }
     }
 
+    // retrieve gohome user
+    suspend fun isGohome(name: String): Int {
+        return userDao.isGoHome(name)
+    }
+
+    suspend fun getGohome(name: String): User {
+        return userDao.findUser(name, 1)
+    }
+
     fun clear() {
         viewModelScope.launch {
             userDao.clear()
@@ -181,7 +191,7 @@ class PresentCallbackProperties(private val userDao: UserDao) {
         try {
             val result = when (dateTime.hour) {
                 // entry time
-                in 6..11 -> {
+                in 1..11 -> {
                     // check if user is already present (prevent redundant data)
                     if (userDao.isExist(name, 0) == 1) {
                         // already present
@@ -208,7 +218,6 @@ class PresentCallbackProperties(private val userDao: UserDao) {
                     } else {
                         // if not present yet, means late
 
-                        // TODO: harus diapakan orang yang terlambat?
                         // late
                         2
                     }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import com.example.siado.ml.FaceModel
+import com.example.siado.ui.MainActivity.Companion.interpreter
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.nio.ByteBuffer
@@ -12,6 +13,25 @@ import java.nio.ByteOrder
 
 object PhotoProcessor {
     fun classify(
+        bitmapImage: Bitmap,
+        context: Context
+    ): String {
+        return firebaseModel(bitmapImage, context)
+    }
+
+    private fun FloatArray.argMax(): Int {
+        var maxIndex = 0
+        var maxValue = this[maxIndex]
+        for (i in 1 until this.size) {
+            if (this[i] > maxValue) {
+                maxIndex = i
+                maxValue = this[i]
+            }
+        }
+        return maxIndex
+    }
+
+    private fun localModel(
         bitmapImage: Bitmap,
         context: Context
     ): String {
@@ -71,15 +91,50 @@ object PhotoProcessor {
         return label[pred]
     }
 
-    private fun FloatArray.argMax(): Int {
-        var maxIndex = 0
-        var maxValue = this[maxIndex]
-        for (i in 1 until this.size) {
-            if (this[i] > maxValue) {
-                maxIndex = i
-                maxValue = this[i]
+    private fun firebaseModel(
+        bitmapImage: Bitmap,
+        context: Context
+    ): String {
+        // scale down bitmap
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmapImage, 244, 244, true)
+
+        // Prepare input data
+        val input = ByteBuffer.allocateDirect(224 * 224 * 3 * 4).order(ByteOrder.nativeOrder())
+        for (y in 0 until 224) {
+            for (x in 0 until 224) {
+                val px = scaledBitmap.getPixel(x, y)
+                val r = Color.red(px)
+                val g = Color.green(px)
+                val b = Color.blue(px)
+
+                val rf = (r - 127) / 255f
+                val gf = (g - 127) / 255f
+                val bf = (b - 127) / 255f
+
+                input.putFloat(rf)
+                input.putFloat(gf)
+                input.putFloat(bf)
             }
         }
-        return maxIndex
+
+        val bufferSize = 1000 * java.lang.Float.SIZE / java.lang.Byte.SIZE
+        val modelOutput = ByteBuffer.allocateDirect(bufferSize).order(ByteOrder.nativeOrder())
+
+        interpreter?.run(input, modelOutput)
+
+        modelOutput.rewind()
+        val probabilities = modelOutput.asFloatBuffer()
+
+        // Process inference result
+        val label = listOf(
+            "afdhal", "alex", "anip", "ardhy", "mikio", "rafka", "tresna", "wahyu", "zahy"
+        )
+
+        val pred_float = FloatArray(label.size)
+        probabilities.get(pred_float)
+
+        val pred = pred_float.argMax()
+
+        return label[pred]
     }
 }
