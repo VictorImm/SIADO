@@ -25,7 +25,8 @@
             android:layout_marginTop="16dp"
             android:text="Face Scanned!"
             android:textSize="24sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
             card_view:layout_constraintEnd_toEndOf="@+id/imageView"
             card_view:layout_constraintStart_toStartOf="@+id/imageView"
             card_view:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -54,6 +55,8 @@
                 android:layout_height="wrap_content"
                 android:text="Welcome, "
                 android:textSize="18sp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/black"
                 card_view:layout_constraintEnd_toStartOf="@+id/tv_name"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
@@ -63,6 +66,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
@@ -80,6 +85,7 @@
             android:layout_marginBottom="16dp"
             android:text="Done"
             android:textSize="18sp"
+            android:fontFamily="@font/poppins_regular"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"

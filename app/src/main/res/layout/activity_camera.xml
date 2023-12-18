@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CameraActivity">
+    tools:context=".ui.camera.present.CameraActivity">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/camera_view"
@@ -78,6 +78,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="64dp"
         android:text="Capture"
+        android:fontFamily="@font/poppins_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

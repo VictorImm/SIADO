@@ -25,7 +25,8 @@
             android:layout_marginTop="16dp"
             android:text="Oh no!"
             android:textSize="24sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
             card_view:layout_constraintEnd_toEndOf="@+id/imageView"
             card_view:layout_constraintStart_toStartOf="@+id/imageView"
             card_view:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -46,6 +47,8 @@
             android:layout_height="wrap_content"
             android:text="Error message"
             android:textSize="18sp"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/black"
             card_view:layout_constraintEnd_toEndOf="@+id/tv_verbose"
             card_view:layout_constraintStart_toStartOf="@+id/tv_verbose"
             card_view:layout_constraintTop_toBottomOf="@+id/tv_verbose" />
@@ -60,6 +63,7 @@
             android:layout_marginBottom="16dp"
             android:backgroundTint="#FFAA4444"
             android:text="Try Again"
+            android:fontFamily="@font/poppins_regular"
             android:textSize="18sp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
