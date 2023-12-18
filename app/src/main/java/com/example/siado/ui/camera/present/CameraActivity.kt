@@ -1,6 +1,5 @@
-package com.example.siado.ui
+package com.example.siado.ui.camera.present
 
-import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,17 +13,14 @@ import androidx.lifecycle.Observer
 import com.example.siado.data.application.Application
 import com.example.siado.utils.camerax.CameraManager
 import com.example.siado.databinding.ActivityCameraBinding
-import com.example.siado.ui.dialog.TrueDialog
 import com.example.siado.utils.GetTimeNow
 import com.example.siado.data.user.viewmodel.UserViewModel
 import com.example.siado.data.user.viewmodel.UserViewModelFactory
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 class CameraActivity : AppCompatActivity() {
 
@@ -86,7 +82,7 @@ class CameraActivity : AppCompatActivity() {
             bgDim.visibility = View.VISIBLE
             loading.visibility = View.VISIBLE
 
-            captureStatusLiveData.observe(this, Observer {  status ->
+            captureStatusLiveData.observe(this, Observer { status ->
                 if (status == 0) {
                     bgDim.visibility = View.GONE
                     loading.visibility = View.GONE
@@ -115,7 +111,6 @@ class CameraActivity : AppCompatActivity() {
         )
         cameraManager.startCamera()
 
-        // TODO: Apakah akan membebani hrdware jika membuat terlalu banyak threads?
         // finish activity when 60s idle
         dialogStatusLiveData.observe(this@CameraActivity, Observer {
             if (dialogStatusLiveData.value == 0) {
