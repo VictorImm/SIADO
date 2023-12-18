@@ -1,6 +1,5 @@
 package com.example.siado.ui.dialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -8,13 +7,9 @@ import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Window
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.example.siado.R
-import com.example.siado.ui.CameraActivity
-import com.example.siado.utils.BitmapRotator
+import com.example.siado.ui.camera.present.CameraActivity
 import kotlinx.coroutines.*
 
 class TrueDialog() {

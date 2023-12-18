@@ -3,7 +3,6 @@ package com.example.siado.utils.camerax
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.util.Log
 import androidx.camera.core.*
 import androidx.camera.core.ImageCapture.OnImageCapturedCallback
@@ -11,18 +10,13 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
 import com.example.siado.data.DateTime
-import com.example.siado.ml.FaceModel
-import com.example.siado.ui.CameraActivity
+import com.example.siado.ui.camera.present.CameraActivity
 import com.example.siado.utils.BitmapRotator
 import com.example.siado.utils.ml.FaceCrop
 import com.example.siado.utils.ml.PhotoProcessor
 import com.example.siado.data.user.viewmodel.UserViewModel
-import org.tensorflow.lite.DataType
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
