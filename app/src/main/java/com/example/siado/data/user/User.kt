@@ -11,9 +11,9 @@ data class User (
 
     @ColumnInfo(name = "name")
     val name: String,
-    @ColumnInfo(name = "status") // 0 = entry, 1 = depart
+    @ColumnInfo(name = "status") // 0 = attend, 1 = go home
     val status: Int,
-    @ColumnInfo(name = "arrival")
+    @ColumnInfo(name = "arrival") // 0 = valid, 1 = late
     val arrival: Int,
 
     @ColumnInfo(name = "date")
