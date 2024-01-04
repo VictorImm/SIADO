@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.siado.data.DateTime
 import com.example.siado.data.UserDetail
+import com.example.siado.data.UserScanned
 import com.example.siado.data.user.User
 import com.example.siado.data.user.UserDao
 import com.example.siado.ui.camera.present.CameraActivity
@@ -93,7 +94,7 @@ class UserViewModel(private val userDao: UserDao): ViewModel() {
 
     fun present(
         image: Bitmap,
-        name: String,
+        name: UserScanned,
         dateTime: DateTime,
         context: Context
     ) {
@@ -112,7 +113,7 @@ class UserViewModel(private val userDao: UserDao): ViewModel() {
                         // save user to database
                         addNewUser(
                             image,
-                            name,
+                            name.name,
                             dateTime,
                             when (result) {
                                 2 -> 0
@@ -145,7 +146,7 @@ class UserViewModel(private val userDao: UserDao): ViewModel() {
         })
 
         viewModelScope.launch {
-            presentCallbackProperties.saveUserAndReturnStatus(name, dateTime)
+            presentCallbackProperties.saveUserAndReturnStatus(name.name, dateTime)
         }
     }
 
@@ -203,7 +204,7 @@ class PresentCallbackProperties(private val userDao: UserDao) {
                 }
 
                 // out time
-                in 12 .. 18 -> {
+                in 12 .. 23 -> {
                     // check if user present in entry time
                     if (userDao.isExist(name, 0) == 1) {
                         // if present, means valid

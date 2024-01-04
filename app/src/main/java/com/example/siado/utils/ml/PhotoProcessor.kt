@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
+import com.example.siado.data.UserScanned
+import com.example.siado.data.user.User
 //import com.example.siado.ml.FaceModel
 import com.example.siado.ui.MainActivity.Companion.interpreter
 import org.tensorflow.lite.DataType
@@ -17,8 +19,8 @@ object PhotoProcessor {
         "Amri Muhaimin, S.Stat., M.Stat., M.S",
         "Aviolla Terza Damaliana, S.Si, M.Stat",
         "Dr.Eng.Ir.Dwi Arman Prasetya.,ST.,MT.,IPU., Asean. Eng",
-        "Kartika Maulida Hindrayani S.Kom, M.Kom', 
-        'Mhs_Alex",
+        "Kartika Maulida Hindrayani S.Kom, M.Kom",
+        "Mhs_Alex",
         "Mhs_Ardhy",
         "Mhs_Hanif",
         "Mhs_Mikio",
@@ -31,7 +33,7 @@ object PhotoProcessor {
     fun classify(
         bitmapImage: Bitmap,
         context: Context
-    ): String {
+    ): UserScanned {
         return firebaseModel(bitmapImage, context)
     }
 
@@ -110,7 +112,7 @@ object PhotoProcessor {
     private fun firebaseModel(
         bitmapImage: Bitmap,
         context: Context
-    ): String {
+    ): UserScanned {
         // scale down bitmap
         val scaledBitmap = Bitmap.createScaledBitmap(bitmapImage, 244, 244, true)
 
@@ -147,6 +149,9 @@ object PhotoProcessor {
 
         val pred = pred_float.argMax()
 
-        return label[pred]
+        return UserScanned(
+            name = label[pred],
+            prob = pred_float[pred]
+        )
     }
 }

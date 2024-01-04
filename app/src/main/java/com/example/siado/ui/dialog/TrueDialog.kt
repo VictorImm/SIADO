@@ -9,13 +9,15 @@ import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import com.example.siado.R
+import com.example.siado.data.UserScanned
 import com.example.siado.ui.camera.present.CameraActivity
 import kotlinx.coroutines.*
+import kotlin.math.roundToInt
 
 class TrueDialog() {
 
     fun showDialog(
-        name: String,
+        name: UserScanned,
         status: Int,
         context: Context,
     ) {
@@ -35,7 +37,7 @@ class TrueDialog() {
         }
 
         val tvName: TextView = dialog.findViewById(R.id.tv_name)
-        tvName.text = name
+        tvName.text = "${name.name} (${((name.prob)*100).roundToInt()}%)"
 
         val btnDone: Button = dialog.findViewById(R.id.btn_done)
         btnDone.setOnClickListener {

@@ -11,6 +11,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.example.siado.data.DateTime
+import com.example.siado.data.UserScanned
 import com.example.siado.ui.camera.present.CameraActivity
 import com.example.siado.utils.BitmapRotator
 import com.example.siado.utils.ml.FaceCrop
@@ -172,7 +173,7 @@ class CameraManager(
     private fun insertName(
         viewModel: UserViewModel,
         image: Bitmap,
-        name: String,
+        name: UserScanned,
         dateTime: DateTime,
         context: Context
     ) {
@@ -187,7 +188,7 @@ class CameraManager(
     private fun verifyPhoto(
         context: Context,
         bitmapImage: Bitmap
-    ): String {
+    ): UserScanned {
         return (PhotoProcessor.classify(bitmapImage, context))
     }
 
