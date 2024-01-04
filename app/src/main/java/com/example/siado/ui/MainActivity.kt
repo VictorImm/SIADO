@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -16,6 +17,7 @@ import com.example.siado.data.user.viewmodel.UserViewModel
 import com.example.siado.data.user.viewmodel.UserViewModelFactory
 import com.example.siado.ui.admin.AdminActivity
 import com.example.siado.ui.camera.present.CameraActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.ml.modeldownloader.CustomModel
 import com.google.firebase.ml.modeldownloader.CustomModelDownloadConditions
 import com.google.firebase.ml.modeldownloader.DownloadType
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     // widgets
     private lateinit var btnPresent: Button
-    private lateinit var btnClear: Button
+    private lateinit var btnClear: ImageView
     private lateinit var btnAdmin: TextView
 
     // viewModel
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         btnClear = binding.btnClear
         btnClear.setOnClickListener {
-            viewModel.clear()
+            showConfirmationDialog()
         }
 
         btnAdmin = binding.btnLogin
@@ -126,5 +128,17 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun showConfirmationDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Clear Local Database")
+            .setMessage("Delete all local attendance data?")
+            .setCancelable(false)
+            .setNegativeButton("No") { _, _ -> }
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.clear()
+            }
+            .show()
     }
 }

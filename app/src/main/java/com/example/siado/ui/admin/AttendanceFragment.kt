@@ -61,9 +61,6 @@ class AttendanceFragment : Fragment() {
             val action = AttendanceFragmentDirections.actionAttendanceFragmentToAddUserFragment()
             findNavController().navigate(action)
         }
-
-        btnAddDatabase = binding.btnAddDataset
-        // TODO
     }
 
     private fun showRecyclerList(users: List<User>) {

@@ -191,7 +191,7 @@ class PresentCallbackProperties(private val userDao: UserDao) {
         try {
             val result = when (dateTime.hour) {
                 // entry time
-                in 1..11 -> {
+                in 6..11 -> {
                     // check if user is already present (prevent redundant data)
                     if (userDao.isExist(name, 0) == 1) {
                         // already present
