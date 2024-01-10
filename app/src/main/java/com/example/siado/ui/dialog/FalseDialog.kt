@@ -32,8 +32,8 @@ class FalseDialog {
 
         val tvMessage: TextView = dialog.findViewById(R.id.tv_error)
         tvMessage.text = when (errorCode) {
-            3 -> "Already present!"
-            else -> "Invalid time arrival!"
+            3 -> "Sudah Absen"
+            else -> "Waktu tidak sesuai"
 
         }
 

@@ -14,7 +14,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="406dp"
         android:background="@color/white"
         android:padding="10dp">
 
@@ -23,10 +23,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Face Scanned!"
-            android:textSize="24sp"
             android:fontFamily="@font/poppins_bold"
+            android:text="Wajah Terdeteksi!"
             android:textColor="@color/black"
+            android:textSize="24sp"
             card_view:layout_constraintEnd_toEndOf="@+id/imageView"
             card_view:layout_constraintStart_toStartOf="@+id/imageView"
             card_view:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -46,8 +46,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.502"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/tv_verbose">
 
@@ -59,19 +61,9 @@
                 android:text="Welcome, "
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                card_view:layout_constraintEnd_toStartOf="@+id/tv_name"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="Name"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
 
@@ -85,14 +77,28 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
-            android:text="Done"
-            android:textSize="18sp"
+            android:backgroundTint="#FF44AA44"
             android:fontFamily="@font/poppins_regular"
+            android:text="Selesai"
+            android:textSize="18sp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/layout_detail"
-            android:backgroundTint="#FF44AA44"/>
+            card_view:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            card_view:layout_constraintBottom_toTopOf="@+id/btn_done"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/layout_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

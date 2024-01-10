@@ -32,12 +32,12 @@ class TrueDialog() {
 
         val tvWelcome: TextView = dialog.findViewById(R.id.tv_welcome)
         tvWelcome.text = when (status) {
-            0, 2 -> "Welcome, "
-            else -> "See you, "
+            0, 2 -> "Selamat Datang, "
+            else -> "Selamat Tinggal, "
         }
 
         val tvName: TextView = dialog.findViewById(R.id.tv_name)
-        tvName.text = "${name.name} (${((name.prob)*100).roundToInt()}%)"
+        tvName.text = "${name.name}, Kemiripan (${((name.prob)*100).roundToInt()}%)"
 
         val btnDone: Button = dialog.findViewById(R.id.btn_done)
         btnDone.setOnClickListener {
